@@ -1,23 +1,23 @@
-The Stellar Core Prometheus Exporter reads metrics exposed by the
-stellar-core daemon and exposes them in prometheus format
+The DigitalBits Core Prometheus Exporter reads metrics exposed by the
+digitalbits-core daemon and exposes them in prometheus format
 
-Source code and documentation are available in [github](https://github.com/stellar/stellar-core-prometheus-exporter)
+Source code and documentation are available in [github](https://github.com/digitalbits/digitalbits-core-prometheus-exporter)
 
 # Configuration
 
 The image accepts 2 optional environment variables:
- * **STELLAR_CORE_ADDRESS** - URL to stellar-core http endpoint. Defaults to `http://127.0.0.1:11626`
+ * **DIGITALBITS_CORE_ADDRESS** - URL to digitalbits-core http endpoint. Defaults to `http://127.0.0.1:11626`
  * **PORT** - HTTP port to listen on. Defaults to `9473`
 
 # Example config
 
-To deploy the exporter and point it at a local stellar-core quickstart deployment the following docker compose config can be used:
+To deploy the exporter and point it at a local digitalbits-core quickstart deployment the following docker compose config can be used:
 
 ```
 version: "2"
 services:
-  stellar-core:
-    image: "stellar/quickstart"
+  digitalbits-core:
+    image: "digitalbits/quickstart"
     command:
       - "--testnet"
     ports:
@@ -27,7 +27,7 @@ services:
   prometheus-exporter:
     image: ex:latest
     environment:
-      - STELLAR_CORE_ADDRESS=http://stellar-core:11626
+      - DIGITALBITS_CORE_ADDRESS=http://digitalbits-core:11626
     ports:
       - "9473:9473"
 ```

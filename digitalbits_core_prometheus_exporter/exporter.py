@@ -25,11 +25,11 @@ except ImportError:
     from socketserver import ThreadingMixIn
 
 
-parser = argparse.ArgumentParser(description='simple stellar-core Prometheus exporter/scraper')
-parser.add_argument('--stellar-core-address', type=str,
-                    help='Stellar core address. Defaults to STELLAR_CORE_ADDRESS environment '
+parser = argparse.ArgumentParser(description='simple digitalbits-core Prometheus exporter/scraper')
+parser.add_argument('--digitalbits-core-address', type=str,
+                    help='DigitalBits core address. Defaults to DIGITALBITS_CORE_ADDRESS environment '
                          'variable or if not set to http://127.0.0.1:11626',
-                    default=environ.get('STELLAR_CORE_ADDRESS', 'http://127.0.0.1:11626'))
+                    default=environ.get('DIGITALBITS_CORE_ADDRESS', 'http://127.0.0.1:11626'))
 parser.add_argument('--port', type=int,
                     help='HTTP bind port. Defaults to PORT environment variable '
                          'or if not set to 9473',
@@ -43,7 +43,7 @@ class _ThreadingSimpleServer(ThreadingMixIn, HTTPServer):
     daemon_threads = True
 
 
-class StellarCoreHandler(BaseHTTPRequestHandler):
+class DigitalBitsCoreHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         return
 
@@ -114,9 +114,9 @@ class StellarCoreHandler(BaseHTTPRequestHandler):
                 g.labels(*self.labels + [m['boundary']]).inc(count)
 
     def set_vars(self):
-        self.info_url = args.stellar_core_address + '/info'
-        self.metrics_url = args.stellar_core_address + '/metrics'
-        self.cursors_url = args.stellar_core_address + '/getcursor'
+        self.info_url = args.digitalbits_core_address + '/info'
+        self.metrics_url = args.digitalbits_core_address + '/metrics'
+        self.cursors_url = args.digitalbits_core_address + '/getcursor'
         self.info_keys = ['ledger', 'network', 'peers', 'protocol_version', 'quorum', 'startedOn', 'state']
         self.state_metrics = ['booting', 'joining scp', 'connected', 'catching up', 'synced', 'stopping']
         self.ledger_metrics = {'age': 'age', 'baseFee': 'base_fee', 'baseReserve': 'base_reserve',
@@ -125,10 +125,10 @@ class StellarCoreHandler(BaseHTTPRequestHandler):
         self.quorum_metrics = ['agree', 'delayed', 'disagree', 'fail_at', 'missing']
         self.quorum_phase_metrics = ['unknown', 'prepare', 'confirm', 'externalize']
         # Examples:
-        #   "stellar-core 11.1.0-unstablerc2 (324c1bd61b0e9bada63e0d696d799421b00a7950)"
-        #   "stellar-core 11.1.0 (324c1bd61b0e9bada63e0d696d799421b00a7950)"
+        #   "digitalbits-core 11.1.0-unstablerc2 (324c1bd61b0e9bada63e0d696d799421b00a7950)"
+        #   "digitalbits-core 11.1.0 (324c1bd61b0e9bada63e0d696d799421b00a7950)"
         #   "v11.1.0"
-        self.build_regex = re.compile('(stellar-core|v) ?(\d+)\.(\d+)\.(\d+).*$')
+        self.build_regex = re.compile('(digitalbits-core|v) ?(\d+)\.(\d+)\.(\d+).*$')
 
         self.registry = CollectorRegistry()
         self.label_names = ["ver_major", "ver_minor", "ver_patch", "build", "network"]
@@ -161,11 +161,11 @@ class StellarCoreHandler(BaseHTTPRequestHandler):
         # iterate over all metrics
         for k in metrics:
             metric_name = re.sub('\.|-|\s', '_', k).lower()
-            metric_name = 'stellar_core_' + metric_name
+            metric_name = 'digitalbits_core_' + metric_name
 
             if metrics[k]['type'] == 'timer':
                 # we have a timer, expose as a Prometheus Summary
-                # we convert stellar-core time units to seconds, as per Prometheus best practices
+                # we convert digitalbits-core time units to seconds, as per Prometheus best practices
                 metric_name = metric_name + '_seconds'
                 if 'sum' in metrics[k]:
                     # use libmedida sum value
@@ -180,7 +180,7 @@ class StellarCoreHandler(BaseHTTPRequestHandler):
                             self.label_names, registry=self.registry)
                 s.labels(*self.labels).inc(self.duration_to_seconds(total_duration, metrics[k]['duration_unit']))
 
-                # add stellar-core calculated quantiles to our summary
+                # add digitalbits-core calculated quantiles to our summary
                 summary = Gauge(metric_name, 'libmedida metric type: ' + metrics[k]['type'],
                                 self.label_names + ['quantile'], registry=self.registry)
                 summary.labels(*self.labels + ['0.75']).set(
@@ -189,7 +189,7 @@ class StellarCoreHandler(BaseHTTPRequestHandler):
                     self.duration_to_seconds(metrics[k]['99%'], metrics[k]['duration_unit']))
             elif metrics[k]['type'] == 'histogram':
                 if 'count' not in metrics[k]:
-                    # Stellar-core version too old, we don't have required data
+                    # DigitalBits-core version too old, we don't have required data
                     continue
                 c = Counter(metric_name + '_count', 'libmedida metric type: ' + metrics[k]['type'],
                             self.label_names, registry=self.registry)
@@ -198,7 +198,7 @@ class StellarCoreHandler(BaseHTTPRequestHandler):
                             self.label_names, registry=self.registry)
                 s.labels(*self.labels).inc(metrics[k]['sum'])
 
-                # add stellar-core calculated quantiles to our summary
+                # add digitalbits-core calculated quantiles to our summary
                 summary = Gauge(metric_name, 'libmedida metric type: ' + metrics[k]['type'],
                                 self.label_names + ['quantile'], registry=self.registry)
                 summary.labels(*self.labels + ['0.75']).set(metrics[k]['75%'])
@@ -237,8 +237,8 @@ class StellarCoreHandler(BaseHTTPRequestHandler):
 
         # Ledger metrics
         for core_name, prom_name in self.ledger_metrics.items():
-            g = Gauge('stellar_core_ledger_{}'.format(prom_name),
-                      'Stellar core ledger metric name: {}'.format(core_name),
+            g = Gauge('digitalbits_core_ledger_{}'.format(prom_name),
+                      'DigitalBits core ledger metric name: {}'.format(core_name),
                       self.label_names, registry=self.registry)
             g.labels(*self.labels).set(info['ledger'][core_name])
 
@@ -260,14 +260,14 @@ class StellarCoreHandler(BaseHTTPRequestHandler):
             return
 
         for metric in self.quorum_metrics:
-            g = Gauge('stellar_core_quorum_{}'.format(metric),
-                      'Stellar core quorum metric: {}'.format(metric),
+            g = Gauge('digitalbits_core_quorum_{}'.format(metric),
+                      'DigitalBits core quorum metric: {}'.format(metric),
                       self.label_names, registry=self.registry)
             g.labels(*self.labels).set(tmp[metric])
 
         for metric in self.quorum_phase_metrics:
-            g = Gauge('stellar_core_quorum_phase_{}'.format(metric),
-                      'Stellar core quorum phase {}'.format(metric),
+            g = Gauge('digitalbits_core_quorum_phase_{}'.format(metric),
+                      'DigitalBits core quorum phase {}'.format(metric),
                       self.label_names, registry=self.registry)
             if tmp['phase'].lower() == metric:
                 g.labels(*self.labels).set(1)
@@ -276,25 +276,25 @@ class StellarCoreHandler(BaseHTTPRequestHandler):
 
         # Versions >=11.2.0 expose more info about quorum
         if 'transitive' in info['quorum']:
-            g = Gauge('stellar_core_quorum_transitive_intersection',
-                      'Stellar core quorum transitive intersection',
+            g = Gauge('digitalbits_core_quorum_transitive_intersection',
+                      'DigitalBits core quorum transitive intersection',
                       self.label_names, registry=self.registry)
             if info['quorum']['transitive']['intersection']:
                 g.labels(*self.labels).set(1)
             else:
                 g.labels(*self.labels).set(0)
-            g = Gauge('stellar_core_quorum_transitive_last_check_ledger',
-                      'Stellar core quorum transitive last_check_ledger',
+            g = Gauge('digitalbits_core_quorum_transitive_last_check_ledger',
+                      'DigitalBits core quorum transitive last_check_ledger',
                       self.label_names, registry=self.registry)
             g.labels(*self.labels).set(info['quorum']['transitive']['last_check_ledger'])
-            g = Gauge('stellar_core_quorum_transitive_node_count',
-                      'Stellar core quorum transitive node_count',
+            g = Gauge('digitalbits_core_quorum_transitive_node_count',
+                      'DigitalBits core quorum transitive node_count',
                       self.label_names, registry=self.registry)
             g.labels(*self.labels).set(info['quorum']['transitive']['node_count'])
             # Versions >=11.3.0 expose "critical" key
             if 'critical' in info['quorum']['transitive']:
-                g = Gauge('stellar_core_quorum_transitive_critical',
-                          'Stellar core quorum transitive critical',
+                g = Gauge('digitalbits_core_quorum_transitive_critical',
+                          'DigitalBits core quorum transitive critical',
                           self.label_names + ['critical_validators'], registry=self.registry)
                 if info['quorum']['transitive']['critical']:
                     for peer_list in info['quorum']['transitive']['critical']:
@@ -306,31 +306,31 @@ class StellarCoreHandler(BaseHTTPRequestHandler):
                     g.labels(*l).set(0)
 
         # Peers metrics
-        g = Gauge('stellar_core_peers_authenticated_count',
-                  'Stellar core authenticated_count count',
+        g = Gauge('digitalbits_core_peers_authenticated_count',
+                  'DigitalBits core authenticated_count count',
                   self.label_names, registry=self.registry)
         g.labels(*self.labels).set(info['peers']['authenticated_count'])
-        g = Gauge('stellar_core_peers_pending_count',
-                  'Stellar core pending_count count',
+        g = Gauge('digitalbits_core_peers_pending_count',
+                  'DigitalBits core pending_count count',
                   self.label_names, registry=self.registry)
         g.labels(*self.labels).set(info['peers']['pending_count'])
 
-        g = Gauge('stellar_core_protocol_version',
-                  'Stellar core protocol_version',
+        g = Gauge('digitalbits_core_protocol_version',
+                  'DigitalBits core protocol_version',
                   self.label_names, registry=self.registry)
         g.labels(*self.labels).set(info['protocol_version'])
 
         for metric in self.state_metrics:
             name = re.sub('\s', '_', metric)
-            g = Gauge('stellar_core_{}'.format(name),
-                      'Stellar core state {}'.format(metric),
+            g = Gauge('digitalbits_core_{}'.format(name),
+                      'DigitalBits core state {}'.format(metric),
                       self.label_names, registry=self.registry)
             if info['state'].lower().startswith(metric):  # Use startswith to work around "!"
                 g.labels(*self.labels).set(1)
             else:
                 g.labels(*self.labels).set(0)
 
-        g = Gauge('stellar_core_started_on', 'Stellar core start time in epoch', self.label_names, registry=self.registry)
+        g = Gauge('digitalbits_core_started_on', 'DigitalBits core start time in epoch', self.label_names, registry=self.registry)
         date = datetime.strptime(info['startedOn'], "%Y-%m-%dT%H:%M:%SZ")
         g.labels(*self.labels).set(int(date.strftime('%s')))
 
@@ -356,8 +356,8 @@ class StellarCoreHandler(BaseHTTPRequestHandler):
                 self.error(500, 'Error parsing cursor JSON data')
                 return
 
-            g = Gauge('stellar_core_active_cursors',
-                      'Stellar core active cursors',
+            g = Gauge('digitalbits_core_active_cursors',
+                      'DigitalBits core active cursors',
                       self.label_names + ['cursor_name'], registry=self.registry)
             for cursor in cursors:
                 if not cursor:
@@ -379,7 +379,7 @@ class StellarCoreHandler(BaseHTTPRequestHandler):
 
 
 def main():
-    httpd = _ThreadingSimpleServer(("", args.port), StellarCoreHandler)
+    httpd = _ThreadingSimpleServer(("", args.port), DigitalBitsCoreHandler)
     t = threading.Thread(target=httpd.serve_forever)
     t.daemon = True
     t.start()

@@ -59,7 +59,7 @@
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "stellar-core"
+        "digitalbits-core"
       ],
       "type": "dashboards"
     }
@@ -85,7 +85,7 @@
           "value": "current"
         }
       ],
-      "description": "List of nodes matching currently selected filters.\n\nIf no nodes are showing make sure stellar-core nodes are scraped by prometheus by a job matching reges \".*stellar.core.*\"",
+      "description": "List of nodes matching currently selected filters.\n\nIf no nodes are showing make sure digitalbits-core nodes are scraped by prometheus by a job matching reges \".*digitalbits.core.*\"",
       "fontSize": "100%",
       "gridPos": {
         "h": 9,
@@ -162,7 +162,7 @@
       ],
       "targets": [
         {
-          "expr": "up{job=~\".*stellar.core.*\", environment=~\"$environment\",instance=~\"$instance\"}",
+          "expr": "up{job=~\".*digitalbits.core.*\", environment=~\"$environment\",instance=~\"$instance\"}",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -260,7 +260,7 @@
       ],
       "targets": [
         {
-          "expr": "stellar_core_quorum_transitive_intersection{environment=~\"$environment\",instance=~\"$instance\"}",
+          "expr": "digitalbits_core_quorum_transitive_intersection{environment=~\"$environment\",instance=~\"$instance\"}",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -350,7 +350,7 @@
       ],
       "targets": [
         {
-          "expr": "stellar_core_quorum_transitive_critical{environment=~\"$environment\",instance=~\"$instance\"}",
+          "expr": "digitalbits_core_quorum_transitive_critical{environment=~\"$environment\",instance=~\"$instance\"}",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 1,
@@ -407,14 +407,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "stellar_core_ledger_age{environment=~\"$environment\",instance=~\"$instance\"} ",
+          "expr": "digitalbits_core_ledger_age{environment=~\"$environment\",instance=~\"$instance\"} ",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{instance}}",
           "refId": "A"
         },
         {
-          "expr": "avg(avg_over_time(stellar_core_ledger_age{environment=~\"$environment\",instance=~\"$instance\"}[5m]))",
+          "expr": "avg(avg_over_time(digitalbits_core_ledger_age{environment=~\"$environment\",instance=~\"$instance\"}[5m]))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Average (5min rolling)",
@@ -522,14 +522,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(\n  rate(stellar_core_ledger_age_closed_sum{environment=~\"$environment\",instance=~\"$instance\"}[1m]) /\n  rate(stellar_core_ledger_age_closed_count{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n)",
+          "expr": "avg(\n  rate(digitalbits_core_ledger_age_closed_sum{environment=~\"$environment\",instance=~\"$instance\"}[1m]) /\n  rate(digitalbits_core_ledger_age_closed_count{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Average",
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(\n  0.99,\n  rate(stellar_core_ledger_age_closed_bucket{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n)",
+          "expr": "histogram_quantile(\n  0.99,\n  rate(digitalbits_core_ledger_age_closed_bucket{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{instance}} P99",
@@ -637,14 +637,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "avg(\n  rate(stellar_core_ledger_operation_count_sum{environment=~\"$environment\",instance=~\"$instance\"}[1m]) /\n  rate(stellar_core_ledger_operation_count_count{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n)",
+          "expr": "avg(\n  rate(digitalbits_core_ledger_operation_count_sum{environment=~\"$environment\",instance=~\"$instance\"}[1m]) /\n  rate(digitalbits_core_ledger_operation_count_count{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Operations",
           "refId": "A"
         },
         {
-          "expr": "avg(\n  rate(stellar_core_ledger_transaction_count_sum{environment=~\"$environment\",instance=~\"$instance\"}[1m]) /\n  rate(stellar_core_ledger_transaction_count_count{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n)",
+          "expr": "avg(\n  rate(digitalbits_core_ledger_transaction_count_sum{environment=~\"$environment\",instance=~\"$instance\"}[1m]) /\n  rate(digitalbits_core_ledger_transaction_count_count{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Transactions",
@@ -730,7 +730,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "(\n  count(stellar_core_ledger_age{environment=~\"$environment\",instance=~\"$instance\"} > 10) /\n  count(stellar_core_ledger_age{environment=~\"$environment\",instance=~\"$instance\"}) * 100\n) or vector(0)",
+          "expr": "(\n  count(digitalbits_core_ledger_age{environment=~\"$environment\",instance=~\"$instance\"} > 10) /\n  count(digitalbits_core_ledger_age{environment=~\"$environment\",instance=~\"$instance\"}) * 100\n) or vector(0)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -871,7 +871,7 @@
       ],
       "targets": [
         {
-          "expr": "stellar_core_quorum_fail_at{environment=~\"$environment\",instance=~\"$instance\"}",
+          "expr": "digitalbits_core_quorum_fail_at{environment=~\"$environment\",instance=~\"$instance\"}",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -922,7 +922,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "(\n  count(stellar_core_quorum_fail_at{environment=~\"$environment\",instance=~\"$instance\"} <= 1) /\n  count(stellar_core_quorum_fail_at{environment=~\"$environment\",instance=~\"$instance\"}) * 100\n) or vector(0)",
+          "expr": "(\n  count(digitalbits_core_quorum_fail_at{environment=~\"$environment\",instance=~\"$instance\"} <= 1) /\n  count(digitalbits_core_quorum_fail_at{environment=~\"$environment\",instance=~\"$instance\"}) * 100\n) or vector(0)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -1064,7 +1064,7 @@
       ],
       "targets": [
         {
-          "expr": "stellar_core_synced{environment=~\"$environment\",instance=~\"$instance\"}",
+          "expr": "digitalbits_core_synced{environment=~\"$environment\",instance=~\"$instance\"}",
           "format": "time_series",
           "hide": false,
           "instant": false,
@@ -1115,7 +1115,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "(\n  count(stellar_core_synced{environment=~\"$environment\",instance=~\"$instance\"} == 0) /\n  count(stellar_core_synced{environment=~\"$environment\",instance=~\"$instance\"}) * 100\n) or vector(0)",
+          "expr": "(\n  count(digitalbits_core_synced{environment=~\"$environment\",instance=~\"$instance\"} == 0) /\n  count(digitalbits_core_synced{environment=~\"$environment\",instance=~\"$instance\"}) * 100\n) or vector(0)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -1267,7 +1267,7 @@
           ],
           "targets": [
             {
-              "expr": "stellar_core_quorum_missing{environment=~\"$environment\",instance=~\"$instance\"} > 0",
+              "expr": "digitalbits_core_quorum_missing{environment=~\"$environment\",instance=~\"$instance\"} > 0",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -1365,7 +1365,7 @@
           ],
           "targets": [
             {
-              "expr": "stellar_core_quorum_delayed{environment=~\"$environment\",instance=~\"$instance\"} > 0",
+              "expr": "digitalbits_core_quorum_delayed{environment=~\"$environment\",instance=~\"$instance\"} > 0",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -1416,7 +1416,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "changes(stellar_core_quorum_transitive_last_check_ledger{environment=~\"$environment\", instance=~\"$instance\"}[5m])",
+              "expr": "changes(digitalbits_core_quorum_transitive_last_check_ledger{environment=~\"$environment\", instance=~\"$instance\"}[5m])",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{instance}}",
@@ -1524,21 +1524,21 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "stellar_core_bucket_batch_addtime_seconds{environment=~\"$environment\", instance=~\"$instance\",quantile=\"0.75\"}",
+              "expr": "digitalbits_core_bucket_batch_addtime_seconds{environment=~\"$environment\", instance=~\"$instance\",quantile=\"0.75\"}",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "P75 {{instance}}",
               "refId": "A"
             },
             {
-              "expr": "stellar_core_bucket_batch_addtime_seconds{environment=~\"$environment\", instance=~\"$instance\",quantile=\"0.99\"}",
+              "expr": "digitalbits_core_bucket_batch_addtime_seconds{environment=~\"$environment\", instance=~\"$instance\",quantile=\"0.99\"}",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "P99 {{instance}}",
               "refId": "B"
             },
             {
-              "expr": "avg(\n  rate(stellar_core_bucket_batch_addtime_seconds_sum{environment=~\"$environment\", instance=~\"$instance\"}[1m])\n  / rate(stellar_core_bucket_batch_addtime_seconds_count{environment=~\"$environment\", instance=~\"$instance\"}[1m])\n)",
+              "expr": "avg(\n  rate(digitalbits_core_bucket_batch_addtime_seconds_sum{environment=~\"$environment\", instance=~\"$instance\"}[1m])\n  / rate(digitalbits_core_bucket_batch_addtime_seconds_count{environment=~\"$environment\", instance=~\"$instance\"}[1m])\n)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Average",
@@ -1640,14 +1640,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(stellar_core_bucket_memory_shared{environment=~\"$environment\", instance=~\"$instance\"})",
+              "expr": "avg(digitalbits_core_bucket_memory_shared{environment=~\"$environment\", instance=~\"$instance\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Average",
               "refId": "A"
             },
             {
-              "expr": "stellar_core_bucket_memory_shared{environment=~\"$environment\", instance=~\"$instance\"}",
+              "expr": "digitalbits_core_bucket_memory_shared{environment=~\"$environment\", instance=~\"$instance\"}",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{instance}}",
@@ -1748,14 +1748,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(rate(stellar_core_bucket_batch_objectsadded{environment=~\"$environment\", instance=~\"$instance\"}[1m]))",
+              "expr": "avg(rate(digitalbits_core_bucket_batch_objectsadded{environment=~\"$environment\", instance=~\"$instance\"}[1m]))",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Average",
               "refId": "A"
             },
             {
-              "expr": "rate(stellar_core_bucket_batch_objectsadded{environment=~\"$environment\", instance=~\"$instance\"}[1m])",
+              "expr": "rate(digitalbits_core_bucket_batch_objectsadded{environment=~\"$environment\", instance=~\"$instance\"}[1m])",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{instance}}",
@@ -1870,14 +1870,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(rate(stellar_core_overlay_timeout_idle{environment=~\"$environment\", instance=~\"$instance\"}[1m]))",
+              "expr": "avg(rate(digitalbits_core_overlay_timeout_idle{environment=~\"$environment\", instance=~\"$instance\"}[1m]))",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Average",
               "refId": "A"
             },
             {
-              "expr": "rate(stellar_core_overlay_timeout_idle{environment=~\"$environment\", instance=~\"$instance\"}[1m])",
+              "expr": "rate(digitalbits_core_overlay_timeout_idle{environment=~\"$environment\", instance=~\"$instance\"}[1m])",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{instance}}",
@@ -1978,14 +1978,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(rate(stellar_core_overlay_timeout_straggler{environment=~\"$environment\", instance=~\"$instance\"}[1m]))",
+              "expr": "avg(rate(digitalbits_core_overlay_timeout_straggler{environment=~\"$environment\", instance=~\"$instance\"}[1m]))",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Average",
               "refId": "A"
             },
             {
-              "expr": "rate(stellar_core_overlay_timeout_straggler{environment=~\"$environment\", instance=~\"$instance\"}[1m])",
+              "expr": "rate(digitalbits_core_overlay_timeout_straggler{environment=~\"$environment\", instance=~\"$instance\"}[1m])",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{instance}}",
@@ -2086,14 +2086,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(stellar_core_overlay_connection_pending{environment=~\"$environment\", instance=~\"$instance\"})",
+              "expr": "avg(digitalbits_core_overlay_connection_pending{environment=~\"$environment\", instance=~\"$instance\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Average",
               "refId": "A"
             },
             {
-              "expr": "stellar_core_overlay_connection_pending{environment=~\"$environment\", instance=~\"$instance\"}",
+              "expr": "digitalbits_core_overlay_connection_pending{environment=~\"$environment\", instance=~\"$instance\"}",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{instance}}",
@@ -2194,14 +2194,14 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(stellar_core_overlay_connection_authenticated{environment=~\"$environment\", instance=~\"$instance\"})",
+              "expr": "avg(digitalbits_core_overlay_connection_authenticated{environment=~\"$environment\", instance=~\"$instance\"})",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Average",
               "refId": "A"
             },
             {
-              "expr": "stellar_core_overlay_connection_authenticated{environment=~\"$environment\", instance=~\"$instance\"}",
+              "expr": "digitalbits_core_overlay_connection_authenticated{environment=~\"$environment\", instance=~\"$instance\"}",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{instance}}",
@@ -2309,21 +2309,21 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(\n  rate(stellar_core_app_post_on_main_thread_delay_seconds_sum{environment=~\"$environment\", instance=~\"$instance\"}[1m])\n  / rate(stellar_core_app_post_on_main_thread_delay_seconds_count{environment=~\"$environment\", instance=~\"$instance\"}[1m])\n)",
+              "expr": "avg(\n  rate(digitalbits_core_app_post_on_main_thread_delay_seconds_sum{environment=~\"$environment\", instance=~\"$instance\"}[1m])\n  / rate(digitalbits_core_app_post_on_main_thread_delay_seconds_count{environment=~\"$environment\", instance=~\"$instance\"}[1m])\n)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Average",
               "refId": "A"
             },
             {
-              "expr": "stellar_core_app_post_on_main_thread_delay_seconds{environment=~\"$environment\", instance=~\"$instance\",quantile=\"0.75\"}",
+              "expr": "digitalbits_core_app_post_on_main_thread_delay_seconds{environment=~\"$environment\", instance=~\"$instance\",quantile=\"0.75\"}",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "P75 {{instance}}",
               "refId": "B"
             },
             {
-              "expr": "stellar_core_app_post_on_main_thread_delay_seconds{environment=~\"$environment\", instance=~\"$instance\",quantile=\"0.99\"}",
+              "expr": "digitalbits_core_app_post_on_main_thread_delay_seconds{environment=~\"$environment\", instance=~\"$instance\",quantile=\"0.99\"}",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "P99 {{instance}}",
@@ -2426,21 +2426,21 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "avg(\n  rate(stellar_core_app_post_on_background_thread_delay_seconds_sum{environment=~\"$environment\", instance=~\"$instance\"}[1m])\n  / rate(stellar_core_app_post_on_background_thread_delay_seconds_count{environment=~\"$environment\", instance=~\"$instance\"}[1m])\n)",
+              "expr": "avg(\n  rate(digitalbits_core_app_post_on_background_thread_delay_seconds_sum{environment=~\"$environment\", instance=~\"$instance\"}[1m])\n  / rate(digitalbits_core_app_post_on_background_thread_delay_seconds_count{environment=~\"$environment\", instance=~\"$instance\"}[1m])\n)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Average",
               "refId": "A"
             },
             {
-              "expr": "stellar_core_app_post_on_background_thread_delay_seconds{environment=~\"$environment\", instance=~\"$instance\",quantile=\"0.75\"}",
+              "expr": "digitalbits_core_app_post_on_background_thread_delay_seconds{environment=~\"$environment\", instance=~\"$instance\",quantile=\"0.75\"}",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "P75 {{instance}}",
               "refId": "B"
             },
             {
-              "expr": "stellar_core_app_post_on_background_thread_delay_seconds{environment=~\"$environment\", instance=~\"$instance\",quantile=\"0.99\"}",
+              "expr": "digitalbits_core_app_post_on_background_thread_delay_seconds{environment=~\"$environment\", instance=~\"$instance\",quantile=\"0.99\"}",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "P99 {{instance}}",
@@ -2556,7 +2556,7 @@
           "steppedLine": false,
           "targets": [
             {
-              "expr": "rate(stellar_core_crypto_verify_hit{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n/ rate(stellar_core_crypto_verify_total{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n* 100",
+              "expr": "rate(digitalbits_core_crypto_verify_hit{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n/ rate(digitalbits_core_crypto_verify_total{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n* 100",
               "format": "time_series",
               "hide": false,
               "interval": "",
@@ -2565,7 +2565,7 @@
               "refId": "A"
             },
             {
-              "expr": "avg(\n  rate(stellar_core_crypto_verify_hit{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n  / rate(stellar_core_crypto_verify_total{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n  * 100\n)",
+              "expr": "avg(\n  rate(digitalbits_core_crypto_verify_hit{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n  / rate(digitalbits_core_crypto_verify_total{environment=~\"$environment\",instance=~\"$instance\"}[1m])\n  * 100\n)",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "Average",
@@ -2630,7 +2630,7 @@
   "schemaVersion": 18,
   "style": "dark",
   "tags": [
-    "stellar-core"
+    "digitalbits-core"
   ],
   "templating": {
     "list": [
@@ -2638,14 +2638,14 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "label_values(stellar_core_started_on, environment)",
+        "definition": "label_values(digitalbits_core_started_on, environment)",
         "hide": 0,
         "includeAll": true,
         "label": null,
         "multi": false,
         "name": "environment",
         "options": [],
-        "query": "label_values(stellar_core_started_on, environment)",
+        "query": "label_values(digitalbits_core_started_on, environment)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -2660,14 +2660,14 @@
         "allValue": ".*",
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "label_values(stellar_core_started_on{environment=~\"$environment\"}, instance)",
+        "definition": "label_values(digitalbits_core_started_on{environment=~\"$environment\"}, instance)",
         "hide": 0,
         "includeAll": true,
         "label": null,
         "multi": true,
         "name": "instance",
         "options": [],
-        "query": "label_values(stellar_core_started_on{environment=~\"$environment\"}, instance)",
+        "query": "label_values(digitalbits_core_started_on{environment=~\"$environment\"}, instance)",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -2710,7 +2710,7 @@
     ]
   },
   "timezone": "",
-  "title": "Stellar Core Monitoring",
+  "title": "DigitalBits Core Monitoring",
   "uid": "FkxF22IWk",
   "version": 24
 }

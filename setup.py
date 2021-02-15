@@ -4,20 +4,20 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="stellar-core-prometheus-exporter",
+    name="digitalbits-core-prometheus-exporter",
     version="0.9.7",
-    author="Stellar Development Foundation",
-    author_email="ops@stellar.org",
-    description="Export stellar core metrics in prometheus format",
+    author="DigitalBits Development Foundation",
+    author_email="ops@digitalbits.org",
+    description="Export digitalbits core metrics in prometheus format",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/stellar/stellar-core-prometheus-exporter",
+    url="https://github.com/digitalbits/digitalbits-core-prometheus-exporter",
     include_package_data=True,
-    keywords=["prometheus", "exporter", "stellar"],
+    keywords=["prometheus", "exporter", "digitalbits"],
     license="Apache Software License 2.0",
     entry_points={
         'console_scripts': [
-            'stellar-core-prometheus-exporter=stellar_core_prometheus_exporter:run',
+            'digitalbits-core-prometheus-exporter=digitalbits_core_prometheus_exporter:run',
         ],
     },
     packages=setuptools.find_packages(),
