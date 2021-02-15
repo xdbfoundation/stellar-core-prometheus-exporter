@@ -29,6 +29,8 @@ jobs:
 
     - name: Prepare for Deploy
       run: |
+        ls -lah
+        ls -lah dist
         chmod +x ./dist/digitalbits-core-prometheus-exporter
         fpm -f -s dir -t deb -n digitalbits-core-prometheus-exporter -v 1.0.0 \ 
           ./dist/digitalbits-core-prometheus-exporter=/usr/local/bin/digitalbits-core-prometheus-exporter
