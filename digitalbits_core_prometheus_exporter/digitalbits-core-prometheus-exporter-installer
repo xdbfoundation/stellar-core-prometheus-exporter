@@ -3,7 +3,5 @@
 set -e
 
 pip install --upgrade prometheus_client
-cp -f /opt/digitalbits-core-prometheus-exporter/digitalbits-core-prometheus-exporter.service \
-  /etc/systemd/system/digitalbits-core-prometheus-exporter.service
 service digitalbits-core-prometheus-exporter start
 systemctl enable digitalbits-core-prometheus-exporter  
