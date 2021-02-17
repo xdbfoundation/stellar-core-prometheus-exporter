@@ -27,7 +27,7 @@ jobs:
     - name: Prepare for Deploy
       run: |
         fpm -f -s dir -t deb -n digitalbits-core-prometheus-exporter -v 1.0.0 \ 
-          $PWD/digitalbits_core_prometheus_exporter=/opt/digitalbits-core-prometheus-exporter
+          digitalbits_core_prometheus_exporter=/opt/digitalbits-core-prometheus-exporter
 
     - name: Deploy
       run: |
