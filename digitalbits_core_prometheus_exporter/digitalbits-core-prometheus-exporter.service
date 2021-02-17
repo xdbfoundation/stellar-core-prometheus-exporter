@@ -7,7 +7,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=root
-ExecStart=/usr/bin/python3 /opt/digitalbits-core-prometheus-exporter/export.py
+ExecStart=/usr/bin/python3 /opt/digitalbits-core-prometheus-exporter/exporter.py
 
 [Install]
 WantedBy=multi-user.target
