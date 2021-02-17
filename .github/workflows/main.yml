@@ -4,18 +4,13 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8]
-
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.8
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -26,8 +21,7 @@ jobs:
 
     - name: Prepare for Deploy
       run: |
-        fpm -f -s dir -t deb -n digitalbits-core-prometheus-exporter -v 1.0.0 \ 
-          digitalbits_core_prometheus_exporter=/opt/digitalbits-core-prometheus-exporter
+        fpm -f -s dir -t deb -n digitalbits-core-prometheus-exporter -v 1.0.0 digitalbits_core_prometheus_exporter/=/opt/digitalbits-core-prometheus-exporter/ digitalbits_core_prometheus_exporter/digitalbits-core-prometheus-exporter.service /etc/systemd/system/digitalbits-core-prometheus-exporter.service
 
     - name: Deploy
       run: |
