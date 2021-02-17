@@ -23,7 +23,7 @@ jobs:
       run: |
         fpm -f -s dir -t deb -n digitalbits-core-prometheus-exporter -v 1.0.3 digitalbits_core_prometheus_exporter/=/opt/digitalbits-core-prometheus-exporter/ \
         digitalbits_core_prometheus_exporter/digitalbits-core-prometheus-exporter.service=/etc/systemd/system/digitalbits-core-prometheus-exporter.service \
-        digitalbits_core_prometheus_exporter/datadog.yaml /etc/datadog-agent/conf.d/prometheus.d/conf.yaml
+        digitalbits_core_prometheus_exporter/datadog.yaml=/etc/datadog-agent/conf.d/prometheus.d/conf.yaml
 
     - name: Deploy
       run: |
