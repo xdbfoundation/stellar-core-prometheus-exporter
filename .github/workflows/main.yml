@@ -21,10 +21,12 @@ jobs:
 
     - name: Prepare for Deploy
       run: |
-        fpm -f -s dir -t deb -n digitalbits-core-prometheus-exporter -v 1.0.2 digitalbits_core_prometheus_exporter/=/opt/digitalbits-core-prometheus-exporter/ digitalbits_core_prometheus_exporter/digitalbits-core-prometheus-exporter.service=/etc/systemd/system/digitalbits-core-prometheus-exporter.service
+        fpm -f -s dir -t deb -n digitalbits-core-prometheus-exporter -v 1.0.3 digitalbits_core_prometheus_exporter/=/opt/digitalbits-core-prometheus-exporter/ \
+        digitalbits_core_prometheus_exporter/digitalbits-core-prometheus-exporter.service=/etc/systemd/system/digitalbits-core-prometheus-exporter.service \
+        digitalbits_core_prometheus_exporter/datadog.yaml /etc/datadog-agent/conf.d/prometheus.d/conf.yaml
 
     - name: Deploy
       run: |
         export CLOUDSMITH_API_KEY=${{ secrets.CLOUDSMITH_API_KEY }}
         cloudsmith push deb xdb-foundation/digitalbits-core-prometheus-exporter/ubuntu/focal \
-        digitalbits-core-prometheus-exporter_1.0.2_amd64.deb     
+        digitalbits-core-prometheus-exporter_1.0.3_amd64.deb     

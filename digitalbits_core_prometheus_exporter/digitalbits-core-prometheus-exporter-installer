@@ -2,6 +2,8 @@
 
 set -e
 
-pip install --upgrade prometheus_client
+apt update && apt install -y python3-pip
+pip3 install --upgrade prometheus_client
 service digitalbits-core-prometheus-exporter start
 systemctl enable digitalbits-core-prometheus-exporter  
+service datadog-agent restart
