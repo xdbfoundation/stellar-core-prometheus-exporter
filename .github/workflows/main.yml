@@ -14,19 +14,32 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install --upgrade cloudsmith-cli 
-        sudo apt-get install -y ruby ruby-dev rubygems build-essential
+        pip install cloudsmith-cli==0.26.0
+        pip uninstall click -y
+        pip install click==7.1.2
+        sudo apt-get install -y ruby ruby-dev rubygems build-essential alien
         sudo gem install --no-document fpm
 
+    - name: Github Tag Bump
+      id: bump_version
+      uses: anothrNick/github-tag-action@1.34.0
+      env:
+          DEFAULT_BUMP: "patch"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: false  
 
     - name: Prepare for Deploy
       run: |
-        fpm -f -s dir -t deb -n digitalbits-core-prometheus-exporter -v 1.0.3 digitalbits_core_prometheus_exporter/=/opt/digitalbits-core-prometheus-exporter/ \
+        fpm -f -s dir -t deb -n digitalbits-core-prometheus-exporter -v ${{ steps.bump_version.outputs.tag }} digitalbits_core_prometheus_exporter/=/opt/digitalbits-core-prometheus-exporter/ \
         digitalbits_core_prometheus_exporter/digitalbits-core-prometheus-exporter.service=/etc/systemd/system/digitalbits-core-prometheus-exporter.service \
         digitalbits_core_prometheus_exporter/datadog.yaml=/etc/datadog-agent/conf.d/prometheus.d/conf.yaml
+    - name: Make .rpm package 
+      run: | 
+          sudo alien -r -k digitalbits-core_${{ steps.bump_version.outputs.tag }}_amd64.deb
 
     - name: Deploy
       run: |
         export CLOUDSMITH_API_KEY=${{ secrets.CLOUDSMITH_API_KEY }}
         cloudsmith push deb xdb-foundation/digitalbits-core-prometheus-exporter/ubuntu/focal \
-        digitalbits-core-prometheus-exporter_1.0.3_amd64.deb     
+        digitalbits-core-prometheus-exporter_${{ steps.bump_version.outputs.tag }}_amd64.deb     
+        cloudsmith push rpm xdb-foundation/digitalbits-core-prometheus-exporter/any-distro/any-version digitalbits-core-prometheus-exporter-${{ steps.bump_version.outputs.tag }}-1.x86_64.rpm
