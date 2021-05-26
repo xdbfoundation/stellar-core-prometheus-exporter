@@ -35,7 +35,7 @@ jobs:
         digitalbits_core_prometheus_exporter/datadog.yaml=/etc/datadog-agent/conf.d/prometheus.d/conf.yaml
     - name: Make .rpm package 
       run: | 
-          sudo alien -r -k digitalbits-core_${{ steps.bump_version.outputs.tag }}_amd64.deb
+          sudo alien -r -k digitalbits-core-prometheus-exporter_${{ steps.bump_version.outputs.tag }}_amd64.deb
 
     - name: Deploy
       run: |
