@@ -1,6 +1,8 @@
 name: DigitalBits Core Prometheus Exporter
 
-on: push
+on:
+  workflow_dispatch:
+    
 
 jobs:
   release:
