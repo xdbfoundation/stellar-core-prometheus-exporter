@@ -1,9 +1,6 @@
 name: DigitalBits Core Prometheus Exporter
 
-on:
-  workflow_dispatch:
-    
-
+on: push
 jobs:
   release:
     runs-on: ubuntu-latest
