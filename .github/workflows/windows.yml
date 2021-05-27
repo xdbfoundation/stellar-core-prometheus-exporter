@@ -16,7 +16,7 @@
     - name: Build Binaries
       run: |
         pyinstaller -wF digitalbits_core_prometheus_exporter/exporter.py
-        mv dist\exporter dist\prometheus_exporter-windows-amd64
+        mv dist\exporter.exe dist\prometheus_exporter-windows-amd64.exe
 
     - name: Get Latest Tag
       id: previoustag
@@ -25,7 +25,7 @@
     - uses: ncipollo/release-action@v1
       with:
           allowUpdates: true
-          artifacts: "dist/prometheus_exporter-darwin-amd64"
+          artifacts: "dist/prometheus_exporter-windows-amd64.exe"
           tag: ${{ steps.previoustag.outputs.tag }}
           bodyFile: "README.md"
           omitBodyDuringUpdate: true
