@@ -143,7 +143,7 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: prometheus_exporter-darwin-amd64
-        path: dist/prometheus_exporter-windows-darwin-amd64
+        path: dist/prometheus_exporter-darwin-amd64
 
     - name: Prepare for Deploy
       run: |
