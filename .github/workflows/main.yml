@@ -13,7 +13,7 @@ jobs:
       uses: anothrNick/github-tag-action@1.46.0
       env:
         DEFAULT_BUMP: "patch"
-        RELEASE_BRANCHES: main
+        RELEASE_BRANCHES: main,master
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         WITH_V: false  
           
